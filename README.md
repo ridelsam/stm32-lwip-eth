@@ -49,23 +49,16 @@ expects the Linux x86-64 toolchain at:
 ~/tools/arm-gnu-toolchain-14.2.rel1-x86_64-arm-none-eabi
 ```
 
-| Command | Purpose |
-|---|---|
-| `./scripts/build.sh --check` | Verify the pinned toolchain and Cortex-M7 multilib without building. |
-| `./scripts/build.sh` | Incrementally build Debug (`-Og -g3`) in `build/Debug`; use its ELF with GDB. |
-| `./scripts/build.sh CONFIG=Release` | Incrementally build size-optimized Release (`-Os -g0`) in `build/Release`. |
-| `./scripts/build.sh clean` | Remove only `build/Debug`. |
-| `./scripts/build.sh clean CONFIG=Release` | Remove only `build/Release`. |
-| `./scripts/build.sh clean-all` | Remove both build configurations. |
+Run build commands from the project root:
 
-| Artifact | Purpose |
-|---|---|
-| `.elf` | Linked firmware with addresses and Debug symbols; used for flashing and GDB. |
-| `.bin` | Raw Flash image without symbols. |
-| `.map` | Linker memory and symbol map. |
-| `.list` | Disassembly and section listing. |
-
-These commands do not yet flash the board or launch a debugger.
+```bash
+./scripts/build.sh --check               # Verify the pinned toolchain without building.
+./scripts/build.sh                       # Incrementally build Debug (-Og -g3).
+./scripts/build.sh CONFIG=Release        # Incrementally build Release (-Os -g0).
+./scripts/build.sh clean                 # Remove the Debug build.
+./scripts/build.sh clean CONFIG=Release  # Remove the Release build.
+./scripts/build.sh clean-all             # Remove both build configurations.
+```
 
 ## Flashing and debugging
 
