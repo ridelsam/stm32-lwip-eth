@@ -1,0 +1,22 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "STM32F767ZI: OpenOCD Debug",
+      "type": "cortex-debug",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "executable": "${workspaceFolder}/build/Debug/stm32-lwip-eth.elf",
+      "servertype": "openocd",
+      "serverpath": "/usr/bin/openocd",
+      "configFiles": [
+        "${workspaceFolder}/openocd.cfg"
+      ],
+      "armToolchainPath": "${env:HOME}/tools/arm-gnu-toolchain-14.2.rel1-x86_64-arm-none-eabi/bin",
+      "device": "STM32F767ZI",
+      "interface": "swd",
+      "runToEntryPoint": "main",
+      "preLaunchTask": "Build Debug"
+    }
+  ]
+}
