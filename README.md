@@ -49,28 +49,23 @@ expects the Linux x86-64 toolchain at:
 ~/tools/arm-gnu-toolchain-14.2.rel1-x86_64-arm-none-eabi
 ```
 
-Verify the selected toolchain without building:
+| Command | Purpose |
+|---|---|
+| `./scripts/build.sh --check` | Verify the pinned toolchain and Cortex-M7 multilib without building. |
+| `./scripts/build.sh` | Incrementally build Debug (`-Og -g3`) in `build/Debug`; use its ELF with GDB. |
+| `./scripts/build.sh CONFIG=Release` | Incrementally build size-optimized Release (`-Os -g0`) in `build/Release`. |
+| `./scripts/build.sh clean` | Remove only `build/Debug`. |
+| `./scripts/build.sh clean CONFIG=Release` | Remove only `build/Release`. |
+| `./scripts/build.sh clean-all` | Remove both build configurations. |
 
-```bash
-./scripts/build.sh --check
-```
+| Artifact | Purpose |
+|---|---|
+| `.elf` | Linked firmware with addresses and Debug symbols; used for flashing and GDB. |
+| `.bin` | Raw Flash image without symbols. |
+| `.map` | Linker memory and symbol map. |
+| `.list` | Disassembly and section listing. |
 
-Build the default Debug configuration, which includes GDB symbols:
-
-```bash
-./scripts/build.sh
-```
-
-Build or clean a specific configuration:
-
-```bash
-./scripts/build.sh CONFIG=Release
-./scripts/build.sh clean
-./scripts/build.sh clean CONFIG=Release
-./scripts/build.sh clean-all
-```
-
-Artifacts are written to `build/Debug` or `build/Release`.
+These commands do not yet flash the board or launch a debugger.
 
 If the toolchain is installed elsewhere, copy
 `toolchain.local.conf.example` to `toolchain.local.conf` and set its absolute
