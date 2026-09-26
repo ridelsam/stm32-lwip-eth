@@ -85,12 +85,13 @@ Confirm the device from WSL, build, and flash:
 ```bash
 lsusb
 ./scripts/build.sh
-./scripts/flash.sh
+./scripts/flash.sh                 # Flash the Debug ELF.
+CONFIG=Release ./scripts/flash.sh  # Flash the Release ELF.
 ```
 
 `flash.sh` programs, verifies, resets, and exits. It uses the Debug ELF by
-default; set `CONFIG=Release` to flash the Release ELF. Flashing remains
-separate from the Makefile.
+default. Prefix the command with `CONFIG=Release` to select the Release ELF.
+Flashing remains separate from the Makefile.
 
 For a manual GDB session, use two WSL terminals. In both terminals, first
 change to the project root (the directory containing `Makefile` and this
@@ -158,6 +159,7 @@ The most useful day-to-day GDB commands are:
 | `delete 2` | Delete breakpoint number 2; `delete` removes all breakpoints. |
 | `clear main` | Remove the breakpoint at that location. |
 | `disable 2` / `enable 2` | Temporarily disable or re-enable breakpoint 2. |
+| `Ctrl + C` | Pause/Suspend/Halt |
 | `continue` or `c` | Resume until a breakpoint or fault. Press `Ctrl+C` to halt again. |
 | `next` or `n` | Execute one source line, stepping over function calls. |
 | `step` or `s` | Execute one source line, stepping into function calls. |
