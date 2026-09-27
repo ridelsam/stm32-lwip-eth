@@ -1,5 +1,6 @@
 #include "main.h"
 #include "leds.h"
+#include "uart.h"
 
 void sysclock_config(void);
 
@@ -10,6 +11,7 @@ int main(void)
 	HAL_Init();
 	sysclock_config();
 	leds_init();
+	uart3_tx_init();
 
 	g_hclk_freq = HAL_RCC_GetHCLKFreq();
 	g_pclk1_freq = HAL_RCC_GetPCLK1Freq();
@@ -22,6 +24,8 @@ int main(void)
 
 	while(1)
 	{
+		printf("Test from UART3....\n\r");
+    	HAL_Delay(10);
 
 	}
 }
