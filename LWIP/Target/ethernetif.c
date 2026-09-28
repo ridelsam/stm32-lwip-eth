@@ -18,6 +18,8 @@ __ALIGN_BEGIN  uint8_t Tx_Buff[ETH_TXBUFNB][ETH_TX_BUF_SIZE] __ALIGN_END;
 
 ETH_HandleTypeDef heth;
 
+static void process_error(void);
+
 void HAL_ETH_MspInit( ETH_HandleTypeDef * ethHandle )
 {
 	GPIO_InitTypeDef GPIO_InitStruct = {0};
@@ -152,4 +154,110 @@ static void low_level_init(struct netif *netif)
 
 
 
+}
+
+
+static err_t low_level_output(struct netif *netif, struct pbuf *p)
+{
+	err_t errval;
+	struct pbuf *q;
+	__IO ETH_DMADescTypeDef	*DmaTxDesc;
+	uint8_t *buffer =  (uint8_t *)(heth.TxDesc->Buffer1Addr);
+	DmaTxDesc  = heth.TxDesc;
+
+	uint32_t framelength = 0;
+	uint32_t bufferoffset = 0;
+	uint32_t byteslefttocopy = 0;
+	uint32_t payloadoffset = 0;
+
+
+	/*Copy frames from pbufs ro ETH buff*/
+
+	for(q = p; q != NULL; q =  q->next )
+	{
+		/*Check if buffer is available*/
+		if((DmaTxDesc->Status & ETH_DMATXDESC_OWN) !=  (uint32_t)RESET)
+		{
+			errval =  ERR_USE;
+			process_error();
+		}
+
+	    byteslefttocopy = q->len;
+	    payloadoffset = 0;
+
+	    /*Copy and update size variables when data length is larger than TX BUFF Size*/
+	    while((byteslefttocopy + bufferoffset) > ETH_TX_BUF_SIZE)
+	    {
+	    	/*Copy data to TX buffer*/
+	    	memcpy((uint8_t *)((uint8_t *)buffer +bufferoffset),
+	    			(uint8_t *)((uint8_t *)q->payload + payloadoffset),
+					(ETH_TX_BUF_SIZE - bufferoffset));
+
+	    	/*Point to the next descriptor*/
+	    	DmaTxDesc  =  (ETH_DMADescTypeDef *)(DmaTxDesc->Buffer2NextDescAddr);
+
+			/*Check if buffer is available*/
+			if((DmaTxDesc->Status & ETH_DMATXDESC_OWN) !=  (uint32_t)RESET)
+			{
+				errval =  ERR_USE;
+				process_error();
+			}
+
+			buffer  =  (uint8_t *)(DmaTxDesc->Buffer1Addr);
+
+			byteslefttocopy  = byteslefttocopy - (ETH_TX_BUF_SIZE - bufferoffset );
+			payloadoffset = payloadoffset + (ETH_TX_BUF_SIZE - bufferoffset );
+			framelength =  framelength + (ETH_TX_BUF_SIZE - bufferoffset );
+
+			bufferoffset = 0;
+	    }
+
+	    /*Copy the rest of bytes*/
+	    memcpy((uint8_t *)((uint8_t *)buffer +bufferoffset),
+    			(uint8_t *)((uint8_t *)q->payload + payloadoffset),
+				byteslefttocopy);
+
+    	bufferoffset  =  bufferoffset + byteslefttocopy;
+    	framelength   =  framelength + byteslefttocopy;
+
+
+
+
+	}
+
+	/*Prep TX descriptors to give to DMA*/
+	HAL_ETH_TransmitFrame(&heth,framelength);
+
+	errval = ERR_OK;
+
+	/*Check if Transmit Underflow Status (TUS) is set*/
+	if((heth.Instance->DMASR & ETH_DMASR_TUS) !=  (uint32_t)RESET)
+	{
+		 /*Clear  Transmit Underflow Status (TUS)*/
+		heth.Instance->DMASR =  ETH_DMASR_TUS;
+
+		/*Resume DMA Transmission*/
+		heth.Instance->DMATPDR = 0;
+	}
+
+
+	return errval;
+
+
+}
+
+
+
+static void process_error(void)
+{
+
+	/*Check if Transmit Underflow Status (TUS) is set*/
+	if((heth.Instance->DMASR & ETH_DMASR_TUS) !=  (uint32_t)RESET)
+	{
+		 /*Clear  Transmit Underflow Status (TUS)*/
+		heth.Instance->DMASR =  ETH_DMASR_TUS;
+
+		/*Resume DMA Transmission*/
+		heth.Instance->DMATPDR = 0;
+	}
 }
