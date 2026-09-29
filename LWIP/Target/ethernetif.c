@@ -261,3 +261,110 @@ static void process_error(void)
 		heth.Instance->DMATPDR = 0;
 	}
 }
+
+static struct pbuf * low_level_input(struct netif * netif)
+{
+	__IO ETH_DMADescTypeDef  *dmarxdesc;
+	uint8_t * buffer;
+	struct pbuf *p = NULL;
+	struct pbuf *q = NULL;
+	uint16_t len   = 0;
+
+	uint32_t bufferoffset    =  0;
+	uint32_t payloadoffset   =  0;
+	uint32_t byteslefttocopy = 0;
+
+
+	/*Get received frame*/
+	if(HAL_ETH_GetReceivedFrame(&heth) != HAL_OK)
+	{
+		return NULL;
+	}
+
+
+	/*Get size of packet*/
+	len =  heth.RxFrameInfos.length;
+
+	buffer = (uint8_t *)heth.RxFrameInfos.buffer;
+
+	if( len > 0)
+	{
+		/*Allocate pbuf from lwip buffer pool*/
+		p  = pbuf_alloc(PBUF_RAW,len,PBUF_POOL);
+
+	}
+		if( p != NULL)
+		{
+			dmarxdesc = heth.RxFrameInfos.FSRxDesc;
+			bufferoffset =  0;
+
+			for( q = p; q != NULL; q = q->next)
+			{
+				byteslefttocopy =  q->len;
+				payloadoffset = 0;
+
+			    /*Copy and update size variables when data length is larger than RX BUFF Size*/
+
+
+				while( (byteslefttocopy + bufferoffset) >  ETH_RX_BUF_SIZE)
+				{
+
+					/*Copy data to pbuf*/
+
+					memcpy((uint8_t *)((uint8_t *)q->payload + payloadoffset),
+							((uint8_t *)((uint8_t *)buffer +  bufferoffset)),
+							(ETH_RX_BUF_SIZE -  bufferoffset));
+
+					/*Poin to the next descriptor*/
+					dmarxdesc =  (ETH_DMADescTypeDef *)(dmarxdesc->Buffer2NextDescAddr);
+
+					buffer = (uint8_t *) dmarxdesc->Buffer1Addr;
+
+					byteslefttocopy =  byteslefttocopy - (ETH_RX_BUF_SIZE -  bufferoffset);
+
+					payloadoffset =  payloadoffset + (ETH_RX_BUF_SIZE -  bufferoffset);
+
+				}
+
+				/*Copy remaining dat in pbuf*/
+
+				memcpy((uint8_t *)((uint8_t *)q->payload + payloadoffset),
+						((uint8_t *)((uint8_t *)buffer +  bufferoffset)),
+						byteslefttocopy);
+
+
+				bufferoffset  = bufferoffset + byteslefttocopy;
+			}
+		}
+
+
+
+		/*Point to first descriptor*/
+
+		dmarxdesc =  heth.RxFrameInfos.FSRxDesc;
+
+		/*Set OWN bit in RX descriptors*/
+		for(int i = 0; i<heth.RxFrameInfos.SegCount; i++)
+		{
+			dmarxdesc->Status |= ETH_DMARXDESC_OWN;
+			dmarxdesc =  (ETH_DMADescTypeDef *)(dmarxdesc->Buffer2NextDescAddr);
+		}
+
+		/*Clear Segment Count*/
+
+		heth.RxFrameInfos.SegCount =  0;
+
+		/*Check if RX Buffer unavailable flag is set,
+		 * if so, clear and resume reception*/
+
+		if((heth.Instance->DMASR & ETH_DMASR_RBUS) !=  (uint32_t)RESET)
+		{
+			/*Clear the RBUS flag*/
+			heth.Instance->DMASR  = ETH_DMASR_RBUS;
+
+			/*Resume reception*/
+			heth.Instance->DMARPDR = 0;
+		}
+
+	return p;
+}
