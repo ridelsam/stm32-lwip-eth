@@ -368,3 +368,33 @@ static struct pbuf * low_level_input(struct netif * netif)
 
 	return p;
 }
+
+void ethernetif_input(struct netif * netif)
+{
+	err_t err;
+	struct pbuf *p;
+
+	/*Move received pcket into new pbuf*/
+	p = low_level_input(netif);
+
+	if( p == NULL)
+
+	{
+		return;
+	}
+	/*Entry point into LWIP stack*/
+	err = netif->input(p,netif);
+
+	if(err != ERR_OK)
+	{
+		pbuf_free(p);
+
+		p =NULL;
+	}
+}
+
+
+u32_t sys_now(void)
+{
+	return HAL_GetTick();
+}
