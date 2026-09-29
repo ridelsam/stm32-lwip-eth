@@ -9,6 +9,8 @@
 #include "lwip/memp.h"
 #include <string.h>
 
+#define IFNAME0	'E'
+#define IFNAME1	'X'
 
 __ALIGN_BEGIN  ETH_DMADescTypeDef DMARxDscrTab[ETH_RXBUFNB]  __ALIGN_END;
 __ALIGN_BEGIN  ETH_DMADescTypeDef DMATxDscrTab[ETH_TXBUFNB]  __ALIGN_END;
@@ -397,4 +399,22 @@ void ethernetif_input(struct netif * netif)
 u32_t sys_now(void)
 {
 	return HAL_GetTick();
+}
+
+err_t ethernetif_init(struct netif * netif)
+{
+	/*Set netif name*/
+	netif->name[0] =  IFNAME0;
+	netif->name[1] =  IFNAME1;
+
+	/*Set netif output function*/
+	netif->output = etharp_output;
+
+	/*Set netif link output function*/
+	netif->linkoutput =  low_level_output;
+
+	/*Init hardware*/
+	low_level_init(netif);
+
+	return ERR_OK;
 }
