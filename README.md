@@ -4,7 +4,7 @@ Embedded Ethernet project for the STM32F767ZI Nucleo board exploring the complet
 
 ## Project Goals
 
-The goal of this project is to understand the embedded Ethernet stack end-to-end rather than relying entirely on generated configuration or prebuilt examples.
+Understand the embedded Ethernet stack end-to-end.
 
 The project will progressively implement and explore:
 

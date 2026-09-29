@@ -418,3 +418,88 @@ err_t ethernetif_init(struct netif * netif)
 
 	return ERR_OK;
 }
+
+void ethernetif_update_config(struct netif *netif)
+{
+	 __IO uint32_t tickstart = 0;
+	 uint32_t regvalue = 0;
+
+	 /*Check if link is up*/
+	  if(netif_is_link_up(netif))
+	  {
+		 /*Check if auto-negotiation is enabled*/
+		  if(heth.Init.AutoNegotiation  != ETH_AUTONEGOTIATION_DISABLE)
+		  {
+			/*Enable Auto-negotiation*/
+			  HAL_ETH_WritePHYRegister(&heth,PHY_BCR, PHY_AUTONEGOTIATION);
+
+			  /*Get current tick value*/
+			  tickstart =  HAL_GetTick();
+
+			  /*Wait for auto-negotiation to complete*/
+			  do
+			  {
+				HAL_ETH_ReadPHYRegister(&heth,PHY_BSR,&regvalue);
+
+				if((HAL_GetTick() - tickstart) > 1000 )
+				{
+					/*Set MAC speed and Duplex Mode to PHY*/
+					HAL_ETH_WritePHYRegister(&heth, PHY_BCR,(uint16_t)(heth.Init.DuplexMode >>3)|
+																(uint16_t)(heth.Init.Speed>>1));
+				}
+
+			  }while((regvalue & PHY_AUTONEGO_COMPLETE) !=  PHY_AUTONEGO_COMPLETE);
+
+			  /*Read the results of the auto-negotiation*/
+
+			  if((regvalue & PHY_DUPLEX_STATUS) != (uint32_t)RESET)
+			  {
+				  /*Set ETH duplex to full-duplex*/
+				  heth.Init.DuplexMode =  ETH_MODE_FULLDUPLEX;
+			  }
+			  else
+			  {
+				  /*Set ETH duplex to half-duplex*/
+				  heth.Init.DuplexMode =  ETH_MODE_HALFDUPLEX;
+			  }
+
+			  if(regvalue & PHY_SPEED_STATUS)
+			  {
+				  /*Set ETH speed 10M*/
+				  heth.Init.Speed  =  ETH_SPEED_10M;
+			  }
+			  else
+			  {
+				  /*Set ETH speed 100M*/
+				  heth.Init.Speed  =  ETH_SPEED_100M;
+			  }
+		  }
+		  else
+		  {
+				/*Set MAC speed and Duplex Mode to PHY*/
+				HAL_ETH_WritePHYRegister(&heth, PHY_BCR,(uint16_t)(heth.Init.DuplexMode >>3)|
+															(uint16_t)(heth.Init.Speed>>1));
+		  }
+
+
+		  /*Re-configure ETH MAC*/
+		  HAL_ETH_ConfigMAC(&heth, (ETH_MACInitTypeDef *)NULL);
+
+		  /*Restart MAC interface*/
+		  HAL_ETH_Start(&heth);
+
+	  }
+	  else
+	  {
+		  /*Stop MAC*/
+		  HAL_ETH_Stop(&heth);
+	  }
+
+	  ethernetif_notify_conn_changed(netif);
+}
+
+
+__weak void ethernetif_notify_conn_changed(struct netif *netif)
+{
+	//Do something...
+}
