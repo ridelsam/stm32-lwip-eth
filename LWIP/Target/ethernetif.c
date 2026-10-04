@@ -1,14 +1,5 @@
 #include "ethernetif.h"
 
-#include "lwip/opt.h"
-#include "lwip/mem.h"
-#include "lwip/timeouts.h"
-#include "lwip/ethip6.h"
-#include "netif/etharp.h"
-#include "netif/ethernet.h"
-#include "lwip/memp.h"
-#include <string.h>
-
 #define IFNAME0	'E'
 #define IFNAME1	'X'
 
