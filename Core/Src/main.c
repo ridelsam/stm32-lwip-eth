@@ -35,6 +35,7 @@ int main(void)
 	{
 		
 		lwip_process();
+		printf("IP address from DHCP :  %s\r\n",ip4addr_ntoa(&gnetif.ip_addr));
 	}
 }
 
