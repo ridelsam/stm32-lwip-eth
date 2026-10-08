@@ -3,6 +3,7 @@
 #include "uart.h"
 #include "adc.h"
 #include "lwip.h"
+#include "lwip/apps/httpd.h"
 
 void sysclock_config(void);
 extern ADC_HandleTypeDef hadc1;
@@ -21,6 +22,7 @@ int main(void)
 	adc1_pa4_init();
 
 	lwip_lib_init();
+	httpd_init();
 
 	g_hclk_freq = HAL_RCC_GetHCLKFreq();
 	g_pclk1_freq = HAL_RCC_GetPCLK1Freq();

@@ -27,6 +27,7 @@ SOURCE_DIRS_AFTER_STARTUP := \
 	LWIP/Target \
 	Middlewares/Third_Party/LwIP/src/api \
 	Middlewares/Third_Party/LwIP/src/apps/mqtt \
+	Middlewares/Third_Party/LwIP/src/apps/http \
 	Middlewares/Third_Party/LwIP/src/core \
 	Middlewares/Third_Party/LwIP/src/core/ipv4 \
 	Middlewares/Third_Party/LwIP/src/core/ipv6 \
@@ -40,7 +41,10 @@ OTHER_SOURCES := $(foreach dir,$(SOURCE_DIRS_AFTER_STARTUP),$(wildcard $(dir)/*.
 # Space-separated paths may be supplied on the make command line if a source in
 # one of the directories above must be omitted in a particular build.
 EXCLUDED_SOURCES ?=
-SOURCES := $(filter-out $(EXCLUDED_SOURCES),$(CORE_SOURCES) $(ASM_SOURCES) $(OTHER_SOURCES))
+GENERATED_INCLUDE_SOURCES := \
+	Middlewares/Third_Party/LwIP/src/apps/http/fsdata.c
+
+SOURCES := $(filter-out $(GENERATED_INCLUDE_SOURCES) $(EXCLUDED_SOURCES),$(CORE_SOURCES) $(ASM_SOURCES) $(OTHER_SOURCES))
 
 OBJECTS := $(addprefix $(BUILD_DIR)/,$(SOURCES))
 OBJECTS := $(OBJECTS:.c=.o)
