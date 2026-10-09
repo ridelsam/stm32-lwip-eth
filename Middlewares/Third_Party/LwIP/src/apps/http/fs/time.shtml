@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="refresh" content="2">
+  <link rel="icon" href="data:,">
+  <title>Temporal Compliance Desk | Bureau of Tiny Internet</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: #f4edda;
+      color: #13283f;
+      font: 16px/1.55 Georgia, "Times New Roman", serif;
+    }
+    header {
+      background: #031b33;
+      border-bottom: 6px solid #d5aa4d;
+      color: #fffaf0;
+      padding: 20px;
+      text-align: center;
+    }
+    header p {
+      margin: 0;
+      color: #d5aa4d;
+      font: bold 13px Arial, sans-serif;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
+    header h1 { margin: 6px 0 0; font-size: clamp(28px, 6vw, 46px); }
+    main { width: min(720px, 92%); margin: 34px auto; }
+    .case-file {
+      display: grid;
+      grid-template-columns: minmax(170px, 230px) 1fr;
+      gap: 24px;
+      align-items: center;
+      background: #fffaf0;
+      border: 2px solid #173b5d;
+      box-shadow: 8px 8px 0 #d8c9a4;
+      padding: 26px;
+    }
+    .inspector { width: 100%; height: auto; }
+    .stamp {
+      margin: 0 0 6px;
+      color: #8d2e27;
+      font: bold 13px Arial, sans-serif;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+    h2 { margin: 0; font-size: 25px; }
+    .time {
+      margin: 14px 0;
+      border: 2px dashed #2c756f;
+      background: #e8e0ca;
+      color: #173b5d;
+      padding: 14px;
+      font: bold clamp(25px, 7vw, 42px) "Courier New", monospace;
+      text-align: center;
+    }
+    .fine-print { color: #52616d; font-size: 14px; }
+    .facts {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 10px;
+      margin: 24px 0;
+    }
+    .fact { border-left: 5px solid #2c756f; background: #e8e0ca; padding: 12px; }
+    .fact b {
+      display: block;
+      font: 11px Arial, sans-serif;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    .button {
+      display: inline-block;
+      background: #8d2e27;
+      border: 2px solid #611a16;
+      color: white;
+      font: bold 14px Arial, sans-serif;
+      padding: 11px 16px;
+      text-decoration: none;
+    }
+    .button:hover { background: #aa3b32; }
+    footer { margin: 30px 0; color: #65717a; font-size: 13px; text-align: center; }
+    @media (max-width: 560px) {
+      .case-file { grid-template-columns: 1fr; text-align: center; }
+      .inspector { width: min(230px, 75%); margin: auto; }
+      .fact { text-align: left; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <p>Bureau of Tiny Internet</p>
+    <h1>Temporal Compliance Desk</h1>
+  </header>
+
+  <main>
+    <section class="case-file">
+      <img class="inspector" src="timer.png" alt="A pigeon time inspector perched on a network stopwatch">
+      <div>
+        <p class="stamp">Live evidence · Form T-2</p>
+        <h2>Officially observed time</h2>
+        <div class="time"><!--#TIME--></div>
+        <p>The value above was inserted by the STM32 immediately before this page left the building. Margaret has verified it with a clipboard, so questioning it now requires three forms.</p>
+        <p class="fine-print">This case file automatically reopens every two seconds. No JavaScript, cloud, or qualified horologist was consulted.</p>
+      </div>
+    </section>
+
+    <div class="facts">
+      <div class="fact"><b>Inspection cadence</b>Every 2 bureaucratic seconds</div>
+      <div class="fact"><b>Clock condition</b>Advancing under supervision</div>
+      <div class="fact"><b>Packet punctuality</b>Within acceptable crumb limits</div>
+    </div>
+
+    <a class="button" href="index.html">Return to packet dispatch</a>
+    <footer>Hosted on an STM32. Time may pass faster while optimized.</footer>
+  </main>
+</body>
+</html>

@@ -4,9 +4,11 @@
 #include "adc.h"
 #include "lwip.h"
 #include "lwip/apps/httpd.h"
+#include "ssi_process.h"
 
 void sysclock_config(void);
 extern ADC_HandleTypeDef hadc1;
+extern char const ** tags;
 
 uint32_t g_hclk_freq, g_pclk1_freq,g_pclk2_freq;
 
@@ -23,6 +25,7 @@ int main(void)
 
 	lwip_lib_init();
 	httpd_init();
+	http_set_ssi_handler(ssi_handler,(const char **)tags,NUM_OF_TAGS);
 
 	g_hclk_freq = HAL_RCC_GetHCLKFreq();
 	g_pclk1_freq = HAL_RCC_GetPCLK1Freq();
