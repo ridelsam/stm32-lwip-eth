@@ -40,6 +40,7 @@ int main(void)
 	{
 		
 		lwip_process();
+		HAL_ADC_Start(&hadc1);
 		printf("IP address from DHCP :  %s\r\n",ip4addr_ntoa(&gnetif.ip_addr));
 	}
 }
