@@ -56,3 +56,16 @@ void led_off(uint32_t led)
             break;
     }
 }
+
+void led_toggle(uint32_t led)
+{
+    switch(led)
+    {
+        case GREEN_LED:
+        case BLUE_LED:
+        case RED_LED:
+        case CUSTOM_LED:
+            HAL_GPIO_TogglePin(LED_GPIO_PORT, led);
+            break;
+    }
+}

@@ -6,10 +6,14 @@
 #include "lwip.h"
 #include "lwip/apps/httpd.h"
 #include "ssi_process.h"
+#include "cgi_process.h"
+
 
 void sysclock_config(void);
 extern ADC_HandleTypeDef hadc1;
 extern char const ** tags;
+extern const tCGI LED_CGI;
+extern tCGI CGI_ARR[NUM_OF_CGIS];
 
 uint32_t g_hclk_freq, g_pclk1_freq,g_pclk2_freq;
 
@@ -29,6 +33,9 @@ int main(void)
 	httpd_init();
 	http_set_ssi_handler(ssi_handler,(const char **)tags,NUM_OF_TAGS);
 
+	CGI_ARR[0] =  LED_CGI;
+	http_set_cgi_handlers(CGI_ARR,NUM_OF_CGIS);
+	
 	g_hclk_freq = HAL_RCC_GetHCLKFreq();
 	g_pclk1_freq = HAL_RCC_GetPCLK1Freq();
 	g_pclk2_freq = HAL_RCC_GetPCLK2Freq();

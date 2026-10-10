@@ -9,6 +9,7 @@
 #define 		LWIP_DHCP						1
 #define			LWIP_HTTPD						1
 #define			LWIP_HTTPD_SSI					1
+#define			LWIP_HTTPD_CGI					1
 
 #define			SYS_LIGHTWEIGHT_PROT			0
 #define			MEM_ALIGNMENT				    4
