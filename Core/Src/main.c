@@ -2,6 +2,7 @@
 #include "leds.h"
 #include "uart.h"
 #include "adc.h"
+#include "button.h"
 #include "lwip.h"
 #include "lwip/apps/httpd.h"
 #include "ssi_process.h"
@@ -22,6 +23,7 @@ int main(void)
 	leds_init();
 	uart3_tx_init();
 	adc1_pa4_init();
+	button_init();
 
 	lwip_lib_init();
 	httpd_init();

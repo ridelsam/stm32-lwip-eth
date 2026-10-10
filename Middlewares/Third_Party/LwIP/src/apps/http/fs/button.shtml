@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta http-equiv="refresh" content="2">
   <link rel="icon" href="data:,">
-  <title>Office of Analog Omens | Bureau of Tiny Internet</title>
+  <title>Push-Button Affairs | Bureau of Tiny Internet</title>
   <style>
     * { box-sizing: border-box; }
     body {
@@ -40,7 +40,11 @@
       box-shadow: 8px 8px 0 #d8c9a4;
       padding: 26px;
     }
-    .inspector { width: 100%; height: auto; image-rendering: pixelated; }
+    .inspector {
+      width: 100%;
+      height: auto;
+      image-rendering: pixelated;
+    }
     .stamp {
       margin: 0 0 6px;
       color: #8d2e27;
@@ -50,23 +54,29 @@
     }
     h2 { margin: 0; font-size: 25px; }
     .reading {
-      margin: 14px 0 8px;
-      border: 2px dashed #2c756f;
+      margin: 14px 0;
+      border: 2px dashed #8d2e27;
       background: #e8e0ca;
       color: #173b5d;
       padding: 14px;
-      font: bold clamp(28px, 8vw, 46px) "Courier New", monospace;
+      font: bold clamp(27px, 7vw, 42px) "Courier New", monospace;
       text-align: center;
+      text-transform: uppercase;
     }
-    .units { margin: 0 0 16px; color: #65717a; font-size: 13px; text-align: center; }
     .fine-print { color: #52616d; font-size: 14px; }
+    .warning {
+      background: #13283f;
+      border: 2px dashed #d5aa4d;
+      color: #fffaf0;
+      padding: 13px;
+    }
     .facts {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
       gap: 10px;
       margin: 24px 0;
     }
-    .fact { border-left: 5px solid #2c756f; background: #e8e0ca; padding: 12px; }
+    .fact { border-left: 5px solid #8d2e27; background: #e8e0ca; padding: 12px; }
     .fact b {
       display: block;
       font: 11px Arial, sans-serif;
@@ -94,30 +104,30 @@
 <body>
   <header>
     <p>Bureau of Tiny Internet</p>
-    <h1>Office of Analog Omens</h1>
+    <h1>Department of Push-Button Affairs</h1>
   </header>
 
   <main>
     <section class="report">
-      <img class="inspector" src="sensor.png" alt="A pigeon inspector auditing an electronic sensor and analog gauge">
+      <img class="inspector" src="push-button.png" alt="A pigeon clerk cautiously processing a red push button">
       <div>
-        <p class="stamp">Live evidence · Form A-4</p>
-        <h2>Current mysterious reading</h2>
-        <div class="reading"><!--#SENSOR--></div>
-        <p class="units">units withheld pending calibration paperwork</p>
-        <p>Margaret has observed the sensor, written down the number, and looked concerned in an official capacity. The STM32 inserts her latest finding before dispatching this page.</p>
-        <p class="fine-print">This report refreshes every two seconds. Sudden changes may indicate physics, noise, or somebody touching PA4.</p>
+        <p class="stamp">Live evidence · Form B-1</p>
+        <h2>Current button disposition</h2>
+        <div class="reading"><!--#BUTTON--></div>
+        <p>Margaret has inspected the physical input and entered its present condition into the permanent two-second record.</p>
+        <p class="warning"><strong>Procedural warning:</strong> Hold the button until the next inspection. Brief presses may occur between page refreshes and escape the official census.</p>
+        <p class="fine-print">No press is recognized until the GPIO, SSI handler, and assigned pigeon agree that it happened.</p>
       </div>
     </section>
 
     <div class="facts">
-      <div class="fact"><b>Field office</b>ADC1, channel PA4</div>
-      <div class="fact"><b>Chain of custody</b>Pin → ADC → SSI → pigeon</div>
-      <div class="fact"><b>Confidence level</b>Digitally certain, analogically nervous</div>
+      <div class="fact"><b>Authorized control</b>B1 user button</div>
+      <div class="fact"><b>Chain of custody</b>Finger → GPIO → SSI → pigeon</div>
+      <div class="fact"><b>Review interval</b>Every 2 bureaucratic seconds</div>
     </div>
 
     <a class="button" href="index.html">Return to packet dispatch</a>
-    <footer>Hosted on an STM32. All measurements are innocent until filtered; all portraits until funded.</footer>
+    <footer>Hosted on an STM32. Unauthorized button enthusiasm will be documented.</footer>
   </main>
 </body>
 </html>

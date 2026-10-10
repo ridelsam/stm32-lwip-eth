@@ -40,7 +40,7 @@
       box-shadow: 8px 8px 0 #d8c9a4;
       padding: 26px;
     }
-    .inspector { width: 100%; height: auto; }
+    .inspector { width: 100%; height: auto; image-rendering: pixelated; }
     .stamp {
       margin: 0 0 6px;
       color: #8d2e27;
@@ -115,7 +115,7 @@
     </div>
 
     <a class="button" href="index.html">Return to packet dispatch</a>
-    <footer>Hosted on an STM32. Time may pass faster while optimized.</footer>
+    <footer>Hosted on an STM32. Portrait resolution reduced under Appropriations Memo 8-B.</footer>
   </main>
 </body>
 </html>
