@@ -192,4 +192,4 @@ directly by supplying a GNU Arm tool prefix through `CROSS_COMPILE`.
 
 ## Status
 
-🚧 In development — environment and project scaffolding.
+🚧 In development 
