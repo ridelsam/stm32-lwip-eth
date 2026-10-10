@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Office of Photonic Authorization</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: #f4edda;
+      color: #13283f;
+      font: 16px/1.5 Georgia, "Times New Roman", serif;
+    }
+    header {
+      background: #031b33;
+      border-bottom: 6px solid #d5aa4d;
+      color: #fffaf0;
+      padding: 24px 16px;
+      text-align: center;
+    }
+    header p { color: #d8c9a4; margin: 5px 0 0; }
+    h1 { font-size: clamp(28px, 6vw, 46px); margin: 4px 0; }
+    .stamp {
+      color: #d5aa4d;
+      font: bold 13px Arial, sans-serif;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
+    main { margin: 34px auto; width: min(920px, 94%); }
+    .notice {
+      background: #fffaf0;
+      border: 2px solid #173b5d;
+      box-shadow: 8px 8px 0 #d8c9a4;
+      padding: 22px;
+    }
+    .grid {
+      display: grid;
+      gap: 16px;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      margin: 22px 0;
+    }
+    .lamp-card {
+      background: #e8e0ca;
+      border-top: 7px solid #65717a;
+      padding: 16px;
+      text-align: center;
+    }
+    .lamp-card.red.is-on { border-color: #8d2e27; }
+    .lamp-card.blue.is-on { border-color: #245277; }
+    .lamp-card.green.is-on { border-color: #2c756f; }
+    .lamp-card.yellow.is-on { border-color: #d5aa4d; }
+    .lamp {
+      display: block;
+      height: 128px;
+      image-rendering: pixelated;
+      margin: 0 auto 10px;
+      object-fit: contain;
+      width: 128px;
+    }
+    h2 { font-size: 20px; margin: 5px 0 12px; }
+    form { margin: 0; }
+    .toggle {
+      align-items: center;
+      background: #fffaf0;
+      border: 2px solid #13283f;
+      box-shadow: 3px 3px 0 #13283f;
+      color: #13283f;
+      cursor: pointer;
+      display: grid;
+      font: bold 13px Arial, sans-serif;
+      gap: 8px;
+      grid-template-columns: 58px 1fr 34px;
+      padding: 10px;
+      text-align: left;
+      width: 100%;
+    }
+    .toggle:active { box-shadow: 1px 1px 0 #13283f; transform: translate(2px, 2px); }
+    .toggle:disabled { cursor: wait; opacity: .65; }
+    .track {
+      background: #7d858c;
+      border: 2px solid #13283f;
+      border-radius: 16px;
+      height: 28px;
+      padding: 2px;
+      transition: background .15s;
+      width: 56px;
+    }
+    .knob {
+      background: #fffaf0;
+      border: 2px solid #13283f;
+      border-radius: 50%;
+      display: block;
+      height: 20px;
+      transition: transform .15s;
+      width: 20px;
+    }
+    .is-on .track { background: #2c756f; }
+    .is-on .knob { transform: translateX(26px); }
+    .state { text-align: right; }
+    .state-on, .state-off { display: none; }
+    .is-on .state-on, .is-off .state-off { display: inline; }
+    .request-status {
+      color: #65717a;
+      font: bold 13px Arial, sans-serif;
+      min-height: 1.5em;
+      text-align: center;
+    }
+    .memo {
+      background: #13283f;
+      border: 2px dashed #d5aa4d;
+      color: #fffaf0;
+      padding: 14px;
+    }
+    nav { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+    nav a {
+      background: #173b5d;
+      border: 2px solid #0d2942;
+      color: white;
+      font: bold 14px Arial, sans-serif;
+      padding: 10px 14px;
+      text-decoration: none;
+    }
+    footer { color: #65717a; font-size: 13px; margin: 28px 0; text-align: center; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="stamp">Combined SSI/CGI authorization terminal</div>
+    <h1>Office of Photonic Authorization</h1>
+    <p>CGI changes the hardware. SSI reports what the paperwork actually did.</p>
+  </header>
+
+  <main>
+    <section class="notice">
+      <h2>Illumination permits</h2>
+      <p>Each switch submits one command. The returned page is rebuilt from the GPIO output state, because trusting an unchecked checkbox caused the last audit.</p>
+
+      <div class="grid">
+        <article class="lamp-card red <!--#RLED-->">
+          <img class="lamp" src="<!--#RBULB-->" alt="Red authorization lamp">
+          <h2>Red Alarm Division</h2>
+          <form method="get" action="/leds.cgi">
+            <button class="toggle" type="submit" name="led" value="1">
+              <span class="track"><span class="knob"></span></span>
+              <span>Toggle permit</span>
+              <span class="state"><span class="state-on">ON</span><span class="state-off">OFF</span></span>
+            </button>
+          </form>
+        </article>
+
+        <article class="lamp-card blue <!--#BLED-->">
+          <img class="lamp" src="<!--#BBULB-->" alt="Blue network-weather lamp">
+          <h2>Ethernet Weather Office</h2>
+          <form method="get" action="/leds.cgi">
+            <button class="toggle" type="submit" name="led" value="2">
+              <span class="track"><span class="knob"></span></span>
+              <span>Toggle permit</span>
+              <span class="state"><span class="state-on">ON</span><span class="state-off">OFF</span></span>
+            </button>
+          </form>
+        </article>
+
+        <article class="lamp-card green <!--#GLED-->">
+          <img class="lamp" src="<!--#GBULB-->" alt="Green optimism lamp">
+          <h2>Conditional Optimism</h2>
+          <form method="get" action="/leds.cgi">
+            <button class="toggle" type="submit" name="led" value="3">
+              <span class="track"><span class="knob"></span></span>
+              <span>Toggle permit</span>
+              <span class="state"><span class="state-on">ON</span><span class="state-off">OFF</span></span>
+            </button>
+          </form>
+        </article>
+
+        <article class="lamp-card yellow <!--#LED4-->">
+          <img class="lamp" src="<!--#CBULB-->" alt="Unofficial yellow lamp">
+          <h2>Unrecognized Department</h2>
+          <form method="get" action="/leds.cgi">
+            <button class="toggle" type="submit" name="led" value="4">
+              <span class="track"><span class="knob"></span></span>
+              <span>Toggle permit</span>
+              <span class="state"><span class="state-on">ON</span><span class="state-off">OFF</span></span>
+            </button>
+          </form>
+        </article>
+      </div>
+
+      <p id="request-status" class="request-status" aria-live="polite">Switchboard ready. No form has been misplaced.</p>
+
+      <p class="memo"><strong>Routing slip:</strong> clicking a switch sends <code>/leds.cgi?led=N</code>. CGI toggles that GPIO and selects this page. SSI then inserts the current state class and matching lamp image; a tiny JavaScript clerk swaps in the returned controls without reloading the whole page.</p>
+
+      <nav>
+        <a href="dashboard.shtml">Interdepartmental Dashboard</a>
+        <a href="index.html">Return to the Bureau</a>
+      </nav>
+    </section>
+
+    <footer>Hardware state is now subject to both execution and documentation.</footer>
+  </main>
+  <script>
+    (() => {
+      const grid = document.querySelector('.grid');
+      const status = document.querySelector('#request-status');
+
+      grid.addEventListener('submit', async (event) => {
+        const form = event.target.closest('form');
+        if (!form) return;
+
+        event.preventDefault();
+        const button = form.querySelector('button[name="led"]');
+        const parameter = new URLSearchParams([[button.name, button.value]]);
+        button.disabled = true;
+        status.textContent = 'Routing permit through the CGI department...';
+
+        try {
+          const response = await fetch(`${form.action}?${parameter}`, {
+            cache: 'no-store'
+          });
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+          const documentCopy = new DOMParser().parseFromString(
+            await response.text(),
+            'text/html'
+          );
+          const updatedGrid = documentCopy.querySelector('.grid');
+          if (!updatedGrid) throw new Error('Updated controls were not returned');
+
+          const currentCards = [...grid.querySelectorAll('.lamp-card')];
+          const updatedCards = [...updatedGrid.querySelectorAll('.lamp-card')];
+          if (currentCards.length !== updatedCards.length) {
+            throw new Error('Updated control count did not match');
+          }
+
+          currentCards.forEach((card, index) => {
+            card.className = updatedCards[index].className;
+            card.querySelector('.lamp').src =
+              updatedCards[index].querySelector('.lamp').getAttribute('src');
+          });
+          button.disabled = false;
+          status.textContent = 'Permit executed. SSI verified the new GPIO state.';
+        } catch (error) {
+          button.disabled = false;
+          status.textContent = 'Live clerk unavailable. Reload to confirm the hardware state.';
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

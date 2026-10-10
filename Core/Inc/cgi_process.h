@@ -6,5 +6,8 @@
 
 
 #define NUM_OF_CGIS			1
+#define NUM_OF_TAGS		    11
 
+
+uint16_t ssi_handler(int iIndex, char *pcInsert, int iInsertLen);
 #endif

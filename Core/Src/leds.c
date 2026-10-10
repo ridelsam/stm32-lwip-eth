@@ -69,3 +69,17 @@ void led_toggle(uint32_t led)
             break;
     }
 }
+
+uint8_t led_is_on(uint32_t led)
+{
+    switch(led)
+    {
+        case GREEN_LED:
+        case BLUE_LED:
+        case RED_LED:
+        case CUSTOM_LED:
+            return ((LED_GPIO_PORT->ODR & led) != 0U) ? 1U : 0U;
+        default:
+            return 0U;
+    }
+}
